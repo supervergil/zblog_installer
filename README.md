@@ -1,4 +1,4 @@
-# zblog安装程序
+# zblog安装程序（目前仅支持，linux的centos7系统）
 
 ## 这个项目是做什么的
 
