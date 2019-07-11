@@ -21,6 +21,7 @@ const buildClient = dir => {
   console.log("正在创建文件夹...");
   fse.ensureDirSync(remoteDir);
   fse.emptyDirSync(remoteDir);
+  fse.mkdirSync(`${remoteDir}/download`);
 
   // 构建admin和ucenter至www目录
   console.log("正在构建客户端...");
