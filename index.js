@@ -292,36 +292,34 @@ app.post("/api/configMysql", (req, res) => {
     conn
       .on("ready", async () => {
         const { status, data } = await getMysqlInitialPassword(conn);
-        if (status === "EXEC_FINISHED") {
-          const originalPassword = data.replace(/.+localhost: /gi, "");
-          try {
-            await saveMysqlPassword(conn, {
-              originalPassword,
-              account: mysqlData.account,
-              password: mysqlData.password
-            });
-            conn.end();
-            return res.status(200).json({
-              errno: 0,
-              errmsg: "",
-              data: ""
-            });
-          } catch (e) {
-            conn.end();
-            return res.status(200).json({
-              errno: 3000,
-              errmsg:
-                "你的初始密码已经更改，请使用更改后的密码并且勾选复选框进入下一步！",
-              data:
-                "你的初始密码已经更改，请使用更改后的密码并且勾选复选框进入下一步！"
-            });
-          }
-        } else {
+        const originalPassword = data.replace(/.+localhost: /gi, "");
+        console.log(data, originalPassword);
+        try {
+          await saveMysqlPassword(conn, {
+            originalPassword,
+            account: mysqlData.account,
+            password: mysqlData.password
+          });
+          conn.end();
+          return res.status(200).json({
+            errno: status === 1 ? 0 : 3000,
+            errmsg:
+              status === 1
+                ? ""
+                : "未找到数据库初始密码，请确认数据库是否正确安装！",
+            data:
+              status === 1
+                ? ""
+                : "未找到数据库初始密码，请确认数据库是否正确安装！"
+          });
+        } catch (e) {
           conn.end();
           return res.status(200).json({
             errno: 3000,
-            errmsg: "未找到数据库初始密码，请确认数据库是否正确安装！",
-            data: ""
+            errmsg:
+              "你的初始密码已经更改，请使用更改后的密码并且勾选复选框进入下一步！",
+            data:
+              "你的初始密码已经更改，请使用更改后的密码并且勾选复选框进入下一步！"
           });
         }
       })
@@ -399,7 +397,6 @@ app.post("/api/handleZblog", async (req, res) => {
     stream.pipe(unzip.Extract({ path: "./download/blog" }));
     stream
       .on("error", err => {
-        console.log(err);
         return res
           .status(200)
           .json({ errno: 3000, errmsg: err.toString(), data: err.toString() });
@@ -426,15 +423,27 @@ app.post("/api/handleZblog", async (req, res) => {
           );
 
           // 修改nginx.conf文件
+          const nginxConfFile = "./download/blog/nginx.conf";
           if (!!data.server.domain) {
-            const nginxConfFile = "./download/blog/nginx.conf";
             fs.writeFileSync(
               nginxConfFile,
               fs
                 .readFileSync(nginxConfFile, {
                   encoding: "utf-8"
                 })
-                .replace(`domain.com""`, data.server.domain),
+                .replace(`domain.com`, data.server.domain),
+              {
+                encoding: "utf-8"
+              }
+            );
+          } else {
+            fs.writeFileSync(
+              nginxConfFile,
+              fs
+                .readFileSync(nginxConfFile, {
+                  encoding: "utf-8"
+                })
+                .replace(`server_name domain.com www.domain.com;`, ""),
               {
                 encoding: "utf-8"
               }
@@ -458,21 +467,13 @@ app.post("/api/handleZblog", async (req, res) => {
                   const status = await uploadZblogTar(conn);
                   conn.end();
                   fse.removeSync("./download/blog.tar");
-                  if (status === "COMMAND_NOT_FOUND") {
-                    return res.status(200).json({
-                      errno: 3000,
-                      errmsg: "上传失败！",
-                      data: "上传失败！"
-                    });
-                  } else {
-                    return res.status(200).json({
-                      errno: 0,
-                      errmsg: "",
-                      data: ""
-                    });
-                  }
+                  return res.status(200).json({
+                    errno: status === 0 ? 3000 : 0,
+                    errmsg: status === 0 ? "上传失败！" : "",
+                    data: status === 0 ? "上传失败！" : ""
+                  });
                 })
-                .on("error", function(e) {
+                .on("error", function() {
                   conn.end();
                   return res.status(200).json({
                     errno: 3000,
@@ -490,7 +491,6 @@ app.post("/api/handleZblog", async (req, res) => {
           });
 
           archive.on("error", function(err) {
-            console.log(err);
             return res.status(200).json({
               errno: 3000,
               errmsg: err.toString(),
@@ -514,21 +514,33 @@ app.post("/api/deployZblog", async (req, res) => {
     const conn = new client();
     conn
       .on("ready", async () => {
-        await untarZblog(conn);
-        await installDependencies(conn);
-        await handleLn(conn);
-        // 导入数据库
-        await importSql(conn, data.mysql);
-        // 启动pm2
-        await startPm2(conn);
-        // 重启nginx
-        await startNginx(conn);
+        const untartStatus = await untarZblog(conn);
+        const depStatus = await installDependencies(conn);
+        const lnStatus = await handleLn(conn);
+        const sqlStatus = await importSql(conn, data.mysql);
+        const pm2Status = await startPm2(conn);
+        const nginxStatus = await startNginx(conn);
         conn.end();
-        return res.status(200).json({
-          errno: 0,
-          errmsg: "",
-          data: ""
-        });
+        if (
+          untartStatus &&
+          depStatus &&
+          lnStatus &&
+          sqlStatus &&
+          pm2Status &&
+          nginxStatus
+        ) {
+          return res.status(200).json({
+            errno: 0,
+            errmsg: "",
+            data: ""
+          });
+        } else {
+          return res.status(200).json({
+            errno: 3000,
+            errmsg: "远程部署失败！",
+            data: "远程部署失败！"
+          });
+        }
       })
       .on("error", function(e) {
         conn.end();
