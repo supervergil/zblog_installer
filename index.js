@@ -293,7 +293,6 @@ app.post("/api/configMysql", (req, res) => {
       .on("ready", async () => {
         const { status, data } = await getMysqlInitialPassword(conn);
         const originalPassword = data.replace(/.+localhost: /gi, "");
-        console.log(data, originalPassword);
         try {
           await saveMysqlPassword(conn, {
             originalPassword,
