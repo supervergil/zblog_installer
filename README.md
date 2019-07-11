@@ -8,6 +8,12 @@
 
 详见：https://www.zhangyangjun.com/post/zblog-alpha-test.html
 
+## 内测码获取方式
+
+<img src="./promotion/images/qrcode.jpg" width="320" />
+
+扫描上方二维码，获取zblog第一批使用的内测码。
+
 ## 使用说明
 
 1. 进入zblog_installer的release页面：https://github.com/supervergil/zblog_installer/releases ，下载最新的release包（release包之所以很大，是因为集成了centos的rpm安装包，请耐心下载）
@@ -16,7 +22,7 @@
 
 3. 依赖安装完成后，执行<code>npm start</code>
 
-4. 打开http://localhost:3000，可以看到安装界面
+4. 打开http://localhost:3000 ，可以看到安装界面
 
 <img src="./promotion/images/step/1.png" style="width: 100%;margin: 10px auto" />
 
@@ -62,8 +68,6 @@
 
 ## 其他
 
-如果使用过程遇到问题，请扫描下方微信二维码添加zblog助手咨询。
-
-<img src="./promotion/images/qrcode.jpg" width="320" />
+如果使用过程遇到问题，可以提issue，或者向zblog助手咨询。
 
 广告赞助或者业务合作，可以联系admin@zhangyangjun.com，谢谢你的支持
