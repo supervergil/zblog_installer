@@ -100,6 +100,7 @@ export default {
         await this.install();
         await this.handleZblog();
         await this.deployZblog();
+        this.$router.replace("/over");
       } catch (e) {
         throw e;
       }

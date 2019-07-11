@@ -1,6 +1,7 @@
 <template>
   <div class="page-mysql">
     <h1 class="page-mysql__title">配置你的数据库</h1>
+    <div class="page-mysql__notion">如果数据库刚刚安装，则这里设置的密码会覆盖初始的默认密码。</div>
     <el-form
       ref="form"
       class="page-mysql__form"
@@ -12,10 +13,10 @@
       element-loading-text="正在保存配置..."
     >
       <el-form-item label="数据库用户名" prop="account">
-        <el-input v-model="form.account"></el-input>
+        <el-input v-model="form.account" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="数据库密码" prop="password">
-        <el-input type="password" v-model="form.password"></el-input>
+        <el-input type="password" v-model="form.password" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item>
         <el-checkbox v-model="form.type">如果你的数据库之前已经存在，并且不需要改动账户密码，请勾选此项。</el-checkbox>
@@ -95,6 +96,11 @@ export default {
 <style lang="scss" scoped>
 .page-mysql {
   text-align: center;
+  &__notion {
+    text-align: center;
+    color: #F56C6C;
+    font-size: 12px;
+  }
   &__title {
     color: #409eff;
     font-size: 45px;

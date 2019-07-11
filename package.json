@@ -5,8 +5,8 @@
   "author": "supervergil",
   "scripts": {
     "dev": "nodemon index.js -i /download/",
-    "start": "node index.js",
-    "launch": "node index.js",
+    "start": "supervisor index.js",
+    "launch": "supervisor index.js",
     "package": "node build.js"
   },
   "dependencies": {
@@ -21,7 +21,8 @@
     "unzip-stream": "^0.3.0"
   },
   "devDependencies": {
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "supervisor": "^0.12.0"
   },
   "repository": "",
   "license": "GPL",

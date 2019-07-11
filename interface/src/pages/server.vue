@@ -13,16 +13,16 @@
       element-loading-text="正在连接远程服务器..."
     >
       <el-form-item label="服务器ip" prop="ip">
-        <el-input v-model="form.ip"></el-input>
+        <el-input v-model="form.ip" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="用户名" prop="account">
-        <el-input v-model="form.account"></el-input>
+        <el-input v-model="form.account" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input type="password" v-model="form.password"></el-input>
+        <el-input type="password" v-model="form.password" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="网站域名" prop="domain" v-if="form.hasDomain">
-        <el-input v-model="form.domain" placeholder="如domain.com，不用加http和www"></el-input>
+        <el-input v-model="form.domain" placeholder="如domain.com，不用加http和www" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item>
         <el-checkbox v-model="form.hasDomain">我有域名</el-checkbox>

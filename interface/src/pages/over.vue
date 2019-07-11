@@ -1,6 +1,6 @@
 <template>
   <div class="page-over">
-    <h1 class="page-over__title">zblog已经安装完成</h1>
+    <h1 class="page-over__title">zblog安装完成</h1>
     <div class="page-over__notion" v-if="$store.state.server.domain===''">
       请访问
       <a :href="'http://'+$store.state.server.ip" target="_blank">{{$store.state.server.ip}}</a>
