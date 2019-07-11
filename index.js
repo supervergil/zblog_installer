@@ -12,7 +12,10 @@ const execRemote = require("./lib/exec-remote");
 
 const {
   uploadNodejsRpm,
-  uploadMysqlRpm,
+  uploadNginxRpm,
+  uploadMysqlCommonRpm,
+  uploadMysqlLibsRpm,
+  uploadMysqlClientRpm,
   uploadMysqlServerRpm,
   uploadZblogTar,
   checkLinuxEnv,
@@ -43,32 +46,6 @@ global.linxuEnv = "";
 const app = express();
 const client = ssh2.Client;
 
-const startClient = () => {
-  return new Promise((resolve, reject) => {
-    exec(`cd interface & npm start`, err => {
-      if (!err) {
-        resolve();
-      } else {
-        reject(err);
-      }
-    });
-  });
-};
-
-// (async () => {
-//   // 正在启动安装客户端
-//   console.log("正在启动安装客户端...");
-
-//   try {
-//     await startClient();
-//   } catch (e) {
-//     console.error(e);
-//   }
-// })();
-
-// 正在启动安装服务
-console.log("正在启动安装服务...");
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -81,19 +58,14 @@ app.post("/api/testConnect", (req, res) => {
         // 获取linux系统环境
         global.linxuEnv = await checkLinuxEnv(conn);
         conn.end();
-        if (global.linxuEnv === "REDHAT") {
-          return res.status(200).json({
-            errno: 0,
-            errmsg: "",
-            data: "连接成功！"
-          });
-        } else {
-          return res.status(500).json({
-            errno: 3000,
-            errmsg: "暂不支持redhat系列外的服务器安装！",
-            data: ""
-          });
-        }
+        return res.status(200).json({
+          errno: global.linxuEnv === "REDHAT" ? 0 : 3000,
+          errmsg:
+            global.linxuEnv === "REDHAT"
+              ? ""
+              : "暂不支持redhat系列外的服务器安装！",
+          data: global.linxuEnv === "REDHAT" ? "连接成功！" : ""
+        });
       })
       .on("error", function(e) {
         conn.end();
@@ -128,111 +100,134 @@ app.post("/api/environment", (req, res) => {
           data: "开始安装！"
         });
 
-        global.linxuEnv = await checkLinuxEnv(conn);
-
         // node 安装
         global.statusContent += "<p>正在检测node环境...</p>";
-        const status = await checkNodeEnv(conn);
-        if (status === "COMMAND_NOT_FOUND") {
+        const checkNodeStatus = await checkNodeEnv(conn);
+        if (checkNodeStatus === 0) {
           // nodejs.rpm包上传
           global.statusContent += "<p>正在上传nodejs.rpm包...</p>";
-          const uploadStatus = await uploadNodejsRpm(conn, global.linxuEnv);
-          if (uploadStatus === "COMMAND_NOT_FOUND") {
+          const status = await uploadNodejsRpm(conn);
+          if (status === 0) {
             global.statusContent +=
               "<p style='color: #F56C6C;'>nodejs.rpm包上传失败，请重新尝试！</p>";
             conn.end();
             return (global.status = 2);
-          } else {
+          } else if (status === 1) {
             global.statusContent +=
               "<p style='color: #67C23A;'>nodejs.rpm包上传成功！</p>";
           }
 
           global.statusContent += "<p>正在安装node...</p>";
-          const nodeStatus = await installNode(conn, global.linxuEnv);
-          if (nodeStatus === "EXEC_FINISHED") {
+          const installStatus = await installNode(conn, global.linxuEnv);
+          if (installStatus === 1) {
             global.statusContent +=
               "<p style='color: #67C23A;'>node安装成功！</p>";
-          } else {
+          } else if (installStatus === 0) {
             global.statusContent +=
               "<p style='color: #F56C6C;'>node安装失败，请重新尝试！</p>";
             conn.end();
             return (global.status = 2);
           }
-        } else {
+        } else if (checkNodeStatus === 1) {
           global.statusContent +=
             "<p style='color: #E6A23C;'>node已存在，无需重复安装</p>";
         }
 
         // cnpm 安装
         global.statusContent += "<p>正在检测cnpm环境...</p>";
-        const status2 = await checkCnpm(conn);
-        if (status2 === "COMMAND_NOT_FOUND") {
+        const checkCnpmStatus = await checkCnpm(conn);
+        if (checkCnpmStatus === 0) {
           global.statusContent += "<p>正在安装cnpm...</p>";
-          await installCnpm(conn);
-          global.statusContent +=
-            "<p style='color: #67C23A;'>cnpm安装成功！</p>";
-        } else {
+          const status = await installCnpm(conn);
+          if (status === 0) {
+            global.statusContent +=
+              "<p style='color: #F56C6C;'>cnpm安装失败，请重新尝试！</p>";
+            conn.end();
+            return (global.status = 2);
+          } else if (status === 1) {
+            global.statusContent +=
+              "<p style='color: #67C23A;'>cnpm安装成功！</p>";
+          }
+        } else if (checkCnpmStatus === 1) {
           global.statusContent +=
             "<p style='color: #E6A23C;'>cnpm已存在，无需重复安装</p>";
         }
 
         // pm2 安装
         global.statusContent += "<p>正在检测pm2环境...</p>";
-        const status3 = await checkPm2(conn);
-        if (status3 === "COMMAND_NOT_FOUND") {
+        const checkPm2Status = await checkPm2(conn);
+        if (checkPm2Status === 0) {
           global.statusContent += "<p>正在安装pm2...</p>";
-          await installPm2(conn);
-          global.statusContent +=
-            "<p style='color: #67C23A;'>pm2安装成功！</p>";
-        } else {
+          const status = await installPm2(conn);
+          if (status === 0) {
+            global.statusContent +=
+              "<p style='color: #F56C6C;'>pm2安装失败，请重新尝试！</p>";
+            conn.end();
+            return (global.status = 2);
+          } else if (status === 1) {
+            global.statusContent +=
+              "<p style='color: #67C23A;'>pm2安装成功！</p>";
+          }
+        } else if (checkPm2Status === 1) {
           global.statusContent +=
             "<p style='color: #E6A23C;'>pm2已存在，无需重复安装</p>";
         }
 
         // nginx 安装
         global.statusContent += "<p>正在检测nginx环境...</p>";
-        const status5 = await checkNginxEnv(conn, linxuEnv);
-        if (status5 === "COMMAND_NOT_FOUND") {
+        const checkNginxEnvStatus = await checkNginxEnv(conn, linxuEnv);
+        if (checkNginxEnvStatus === 0) {
+          // nginx包上传
+          global.statusContent += "<p>正在上传nginx.rpm包...</p>";
+          const status = await uploadNginxRpm(conn);
+          if (status === 0) {
+            global.statusContent +=
+              "<p style='color: #F56C6C;'>nginx.rpm包上传失败，请重新尝试！</p>";
+            conn.end();
+            return (global.status = 2);
+          } else if (status === 1) {
+            global.statusContent +=
+              "<p style='color: #67C23A;'>nginx.rpm包上传成功！</p>";
+          }
+
           global.statusContent += "<p>正在安装nginx...</p>";
-          await installNginx(conn, global.linxuEnv);
-          global.statusContent +=
-            "<p style='color: #67C23A;'>nginx安装成功！</p>";
-        } else {
+          const installStatus = await installNginx(conn, global.linxuEnv);
+          if (installStatus === 0) {
+            global.statusContent +=
+              "<p style='color: #F56C6C;'>nginx安装失败，请重新尝试！</p>";
+            conn.end();
+            return (global.status = 2);
+          } else if (installStatus === 1) {
+            global.statusContent +=
+              "<p style='color: #67C23A;'>nginx安装成功！</p>";
+          }
+        } else if (checkNginxEnvStatus === 1) {
           global.statusContent +=
             "<p style='color: #E6A23C;'>nginx已存在，无需重复安装!</p>";
         }
 
         // mysql 安装
         global.statusContent += "<p>正在检测mysql环境...</p>";
-        const status4 = await checkMysqlEnv(conn, global.linxuEnv);
-        if (status4 === "COMMAND_NOT_FOUND") {
-          // mysql.rpm包上传
-          global.statusContent += "<p>正在上传mysql.rpm包...</p>";
-          const uploadStatus = await uploadMysqlRpm(conn, global.linxuEnv);
-          if (uploadStatus === "COMMAND_NOT_FOUND") {
-            global.statusContent +=
-              "<p style='color: #F56C6C;'>mysql.rpm包上传失败，请重新尝试！</p>";
-            conn.end();
-            return (global.status = 2);
-          } else {
-            global.statusContent +=
-              "<p style='color: #67C23A;'>mysql.rpm包上传成功！</p>";
-          }
+        const checkMysqlEnvStatus = await checkMysqlEnv(conn, global.linxuEnv);
+        if (checkMysqlEnvStatus === 0) {
+          // mysql相关rpm包上传
+          global.statusContent += "<p>正在上传mysql相关的rpm包...</p>";
 
-          // mysql-server.rpm包上传
-          global.statusContent += "<p>正在上传mysql-server.rpm包...</p>";
-          const uploadStatus2 = await uploadMysqlServerRpm(
-            conn,
-            global.linxuEnv
-          );
-          if (uploadStatus2 === "COMMAND_NOT_FOUND") {
+          const resp = await Promise.all([
+            uploadMysqlCommonRpm(conn),
+            uploadMysqlLibsRpm(conn),
+            uploadMysqlClientRpm(conn),
+            uploadMysqlServerRpm(conn)
+          ]);
+
+          if (resp.every(item => item === 1)) {
             global.statusContent +=
-              "<p style='color: #F56C6C;'>mysql-server.rpm包上传失败，请重新尝试！</p>";
-            conn.end();
-            return (global.status = 2);
+              "<p style='color: #67C23A;'>mysql包上传成功！</p>";
           } else {
             global.statusContent +=
-              "<p style='color: #67C23A;'>mysql-server.rpm包上传成功！</p>";
+              "<p style='color: #F56C6C;'>mysql包上传失败，请重新尝试！</p>";
+            conn.end();
+            return (global.status = 2);
           }
 
           global.statusContent += "<p>正在安装mysql...</p>";
@@ -246,7 +241,7 @@ app.post("/api/environment", (req, res) => {
             conn.end();
             return (global.status = 2);
           }
-        } else {
+        } else if (checkMysqlEnvStatus === 1) {
           global.statusContent +=
             "<p style='color: #E6A23C;'>mysql已存在，无需重复安装</p>";
         }
@@ -331,7 +326,6 @@ app.post("/api/configMysql", (req, res) => {
         }
       })
       .on("error", function(e) {
-        console.log(e);
         conn.end();
         return res.status(200).json({
           errno: 3000,
