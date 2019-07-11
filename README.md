@@ -10,7 +10,7 @@
 
 ## 使用说明
 
-1. 进入zblog_installer的release页面：https://github.com/supervergil/zblog_installer/releases ，下载最新的release包
+1. 进入zblog_installer的release页面：https://github.com/supervergil/zblog_installer/releases ，下载最新的release包（release包之所以很大，是因为集成了centos的rpm安装包，请耐心下载）
 
 2. 解压release包，进入文件夹后，执行<code>npm install</code>安装依赖
 
@@ -66,4 +66,4 @@
 
 <img src="./promotion/images/qrcode.jpg" width="320" />
 
-广告赞助或者业务合作，可以联系admin@zhangyangjun.com。谢谢你的支持
+广告赞助或者业务合作，可以联系admin@zhangyangjun.com，谢谢你的支持
