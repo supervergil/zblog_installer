@@ -4,8 +4,10 @@
   "version": "1.0.0",
   "author": "supervergil",
   "scripts": {
-    "start": "nodemon index.js -i /download/",
-    "launch": "node index.js"
+    "dev": "nodemon index.js -i /download/",
+    "start": "node index.js",
+    "launch": "node index.js",
+    "package": "node build.js"
   },
   "dependencies": {
     "archiver": "^3.0.0",
