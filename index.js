@@ -211,7 +211,7 @@ app.post("/api/environment", (req, res) => {
         const checkMysqlEnvStatus = await checkMysqlEnv(conn, global.linxuEnv);
         if (checkMysqlEnvStatus === 0) {
           // mysql相关rpm包上传
-          global.statusContent += "<p>正在上传mysql相关的rpm包(该rpm包较大，大约需要等待5分钟)...</p>";
+          global.statusContent += "<p>正在上传mysql相关的rpm包(该rpm包较大，大约需要等待10分钟)...</p>";
 
           const resp = await Promise.all([
             uploadMysqlCommonRpm(conn),

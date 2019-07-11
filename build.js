@@ -33,7 +33,6 @@ const buildClient = dir => {
   fse.copySync("./package", `${remoteDir}/package`);
   fse.copySync("./public", `${remoteDir}/public`);
   fse.copySync("./index.js", `${remoteDir}/index.js`);
-  fse.copySync("./package-lock.json", `${remoteDir}/package-lock.json`);
   fse.copySync("./package.json", `${remoteDir}/package.json`);
 
   // 生成压缩包

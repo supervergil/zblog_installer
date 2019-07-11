@@ -2,7 +2,7 @@
   <div class="page-environment">
     <h1 class="page-environment__title">安装系统环境</h1>
     <div class="page-environment__tip" v-if="launched">
-      <i class="fas fa-sync-alt fa-spin fa-fw"></i> 安装可能需要5-10分钟，请耐心等待，安装过程请勿刷新页面或退出浏览器。
+      <i class="fas fa-sync-alt fa-spin fa-fw"></i> 安装可能需要12-20分钟，请耐心等待，安装过程请勿刷新页面或退出浏览器。
     </div>
     <div class="page-environment__launch" v-else>
       <div>
