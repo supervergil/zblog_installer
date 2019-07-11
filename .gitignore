@@ -2,6 +2,8 @@
 node_modules
 public
 build
+zblog_installer
+zblog_installer.zip
 
 # local env files
 .env.local
