@@ -232,10 +232,10 @@ app.post("/api/environment", (req, res) => {
 
           global.statusContent += "<p>正在安装mysql...</p>";
           const status = await installMysql(conn, global.linxuEnv);
-          if (status === "EXEC_FINISHED") {
+          if (status === 1) {
             global.statusContent +=
               "<p style='color: #67C23A;'>mysql安装成功！</p>";
-          } else {
+          } else if (status === 0) {
             global.statusContent +=
               "<p style='color: #F56C6C;'>mysql安装失败，请重新尝试！</p>";
             conn.end();
