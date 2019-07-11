@@ -12,6 +12,7 @@ import Environment from "@/pages/environment";
 import Mysql from "@/pages/mysql";
 import Code from "@/pages/code";
 import Install from "@/pages/install";
+import Over from "@/pages/over";
 
 Vue.use(VueRouter);
 
@@ -39,6 +40,10 @@ const routerList = [
   {
     path: "/install",
     component: Install
+  },
+  {
+    path: "/over",
+    component: Over
   }
 ];
 
@@ -78,7 +83,12 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.path !== "/" && to.path !== "/welcome" && to.path !== "/server") {
+  if (
+    to.path !== "/" &&
+    to.path !== "/welcome" &&
+    to.path !== "/server" &&
+    to.path !== "/over"
+  ) {
     if (
       store.state.server.ip &&
       store.state.server.account &&

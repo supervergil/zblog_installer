@@ -1,14 +1,12 @@
+const path = require("path");
 const fs = require("fs");
 const fse = require("fs-extra");
 const axios = require("axios");
-const { exec } = require("child_process");
 const express = require("express");
 const bodyParser = require("body-parser");
 const ssh2 = require("ssh2");
 const archiver = require("archiver");
 const unzip = require("unzip-stream");
-
-const execRemote = require("./lib/exec-remote");
 
 const {
   uploadNodejsRpm,
@@ -48,6 +46,8 @@ const client = ssh2.Client;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.post("/api/testConnect", (req, res) => {
   try {

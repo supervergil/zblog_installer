@@ -1,5 +1,6 @@
 const path = require("path");
 module.exports = {
+  outputDir: process.env.NODE_ENV === "production" ? "../public/" : "dist",
   devServer: {
     open: true,
     proxy: {
