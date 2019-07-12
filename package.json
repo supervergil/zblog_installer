@@ -1,13 +1,14 @@
 {
   "name": "zblog_installer",
   "description": "tool for zblog installation",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "supervergil",
   "scripts": {
     "dev": "nodemon index.js -i /download/",
     "start": "supervisor index.js",
     "launch": "supervisor index.js",
-    "package": "node build.js"
+    "package": "node build.js",
+    "download": "node download.js"
   },
   "dependencies": {
     "archiver": "^3.0.0",

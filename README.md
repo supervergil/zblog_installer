@@ -2,7 +2,7 @@
 
 ## 这个项目是做什么的
 
-这个项目是zblog的安装程序，只要你有备案好的域名和linux服务器，目前使用内测码可以一键安装zblog到linux-centos7中。
+这个项目是zblog的安装程序，只要你有一台linux-centos7服务器，目前使用内测码可以一键安装zblog。
 
 ## zblog博客系统介绍
 
@@ -16,11 +16,11 @@
 
 ## 使用说明
 
-1. 进入zblog_installer的release页面：https://github.com/supervergil/zblog_installer/releases ，下载最新的release包（release包之所以很大，是因为集成了centos的rpm安装包，请耐心下载）
+1. 进入zblog_installer的release页面：https://github.com/supervergil/zblog_installer/releases ，下载最新的release包
 
 2. 解压release包，进入文件夹后，执行<code>npm install</code>安装依赖
 
-3. 依赖安装完成后，执行<code>npm start</code>
+3. 执行<code>npm run download</code>下载安装环境所需的rpm包（共需下载mysql-client.rpm和mysql-server.rpm两个包，如果rpm下载失败，可以根据命令行提示，手动下载rpm包），下载完成后执行<code>npm start</code>
 
 4. 打开http://localhost:3000 ，可以看到安装界面
 
@@ -70,4 +70,4 @@
 
 如果使用过程遇到问题，可以提issue，或者向zblog助手咨询。
 
-广告赞助或者业务合作，可以联系admin@zhangyangjun.com，谢谢你的支持
+广告赞助或者业务合作，可以联系admin@zhangyangjun.com，谢谢你的支持！

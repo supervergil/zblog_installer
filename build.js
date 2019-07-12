@@ -35,8 +35,12 @@ const buildClient = dir => {
   fse.copySync("./index.js", `${remoteDir}/index.js`);
   fse.copySync("./package.json", `${remoteDir}/package.json`);
 
-  // 生成压缩包
+  // 移除部分不需要的文件
+  fse.removeSync(`${remoteDir}/package/redhat-linux7/.gitignore`);
+  fse.removeSync(`${remoteDir}/package/redhat-linux7/mysql-client.rpm`);
+  fse.removeSync(`${remoteDir}/package/redhat-linux7/mysql-server.rpm`);
 
+  // 生成压缩包
   const output = fs.createWriteStream("./zblog_installer.zip");
   const archive = archiver("zip", {
     zlib: { level: 9 }
