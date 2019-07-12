@@ -24,7 +24,9 @@
 
 4. 打开http://localhost:3000 ，可以看到安装界面
 
-<img src="./promotion/images/step/s-1.png" width="320" style="margin: 10px auto" />
+<div align=center>
+    <img src="./promotion/images/step/s-1.png" width="320" style="margin: 10px auto" />
+</div>
 
 5. 填写服务器相关信息，有域名则勾选复选框填入域名信息
 
