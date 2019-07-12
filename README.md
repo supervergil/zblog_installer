@@ -25,53 +25,53 @@
 4. 打开http://localhost:3000 ，可以看到安装界面
 
 <div align=center>
-    <img src="./promotion/images/step/s-1.png" width="320" style="margin: 10px auto" />
+    <img src="./promotion/images/step/s-1.png" width="480" style="margin: 10px auto" />
 </div>
 
 5. 填写服务器相关信息，有域名则勾选复选框填入域名信息
 
 <div align=center>
-    <img src="./promotion/images/step/s-2.png" width="320" style="margin: 10px auto" />
+    <img src="./promotion/images/step/s-2.png" width="480" style="margin: 10px auto" />
 </div>
 
 6. 连接成功后，进入系统环境安装
 
 <div align=center>
-    <img src="./promotion/images/step/s-3.png" width="320" style="margin: 10px auto" />
+    <img src="./promotion/images/step/s-3.png" width="480" style="margin: 10px auto" />
 </div>
 
 7. 启动安装后，会有安装进度提示，耐心等待12-20分钟，可以看到配置数据库的按钮出现
 
 <div align=center>
-    <img src="./promotion/images/step/s-4.png" width="320" style="margin: 10px auto" />
+    <img src="./promotion/images/step/s-4.png" width="480" style="margin: 10px auto" />
 </div>
 
 8. 配置你的数据库账户和密码，初次安装数据库，密码是默认进行覆盖的，如果你的数据库之前已经存在，则勾选复选框，并填入旧密码即可进入下一步
 
 <div align=center>
-    <img src="./promotion/images/step/s-5.png" width="320" style="margin: 10px auto" />
+    <img src="./promotion/images/step/s-5.png" width="480" style="margin: 10px auto" />
 </div>
 
 9. 输入之前发放的zblog内测码
 
 <div align=center>
-    <img src="./promotion/images/step/s-6.png" width="320" style="margin: 10px auto" />
+    <img src="./promotion/images/step/s-6.png" width="480" style="margin: 10px auto" />
 </div>
 
 10. 接下来可以安装zblog了，点击安装进行
 
 <div align=center>
-    <img src="./promotion/images/step/s-7.png" width="320" style="margin: 10px auto" />
+    <img src="./promotion/images/step/s-7.png" width="480" style="margin: 10px auto" />
 </div>
 
 <div align=center>
-    <img src="./promotion/images/step/s-8.png" width="320" style="margin: 10px auto" />
+    <img src="./promotion/images/step/s-8.png" width="480" style="margin: 10px auto" />
 </div>
 
 11. 安装完成后，会提示点击链接
 
 <div align=center>
-    <img src="./promotion/images/step/s-10.png" width="320" style="margin: 10px auto" />
+    <img src="./promotion/images/step/s-10.png" width="480" style="margin: 10px auto" />
 </div>
 
 12. 输入你服务器公网ip或者域名，即可访问刚刚安装好的博客
@@ -79,13 +79,13 @@
 13. 使用ip/admin或者域名/admin可以进入博客后台，初始账户为**admin**，初始密码为**admin123456**
 
 <div align=center>
-    <img src="./promotion/images/step/s-11.png" width="320" style="margin: 10px auto" />
+    <img src="./promotion/images/step/s-11.png" width="480" style="margin: 10px auto" />
 </div>
 
 14. 接下来进入后台好好配置你的博客程序吧，请记得点击右上角的头像，先把密码给修改了！
 
 <div align=center>
-    <img src="./promotion/images/step/s-12.png" width="320" style="margin: 10px auto" />
+    <img src="./promotion/images/step/s-12.png" width="480" style="margin: 10px auto" />
 </div>
 
 ## 其他
