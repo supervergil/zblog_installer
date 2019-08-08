@@ -16,7 +16,7 @@
 
 ## 使用说明
 
-1. 进入zblog_installer的release页面：https://github.com/supervergil/zblog_installer/releases ，下载最新的release包
+1. 进入zblog_installer的release页面：https://github.com/supervergil/zblog_installer/releases/download/1.0.2/zblog_installer.zip ，下载最新的release包
 
 2. 解压release包，进入文件夹后，执行<code>npm install</code>安装依赖
 
