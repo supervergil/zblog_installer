@@ -76,7 +76,7 @@ export default {
                 account: this.form.account,
                 password: this.form.password
               });
-              this.$router.push("/code");
+              this.$router.push("/install");
             }
             this.form.loading = false;
           }
@@ -86,7 +86,7 @@ export default {
           account: this.form.account,
           password: this.form.password
         });
-        this.$router.replace("/code");
+        this.$router.replace("/install");
       }
     }
   }
@@ -98,7 +98,7 @@ export default {
   text-align: center;
   &__notion {
     text-align: center;
-    color: #F56C6C;
+    color: #f56c6c;
     font-size: 12px;
   }
   &__title {

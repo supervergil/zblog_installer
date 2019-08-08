@@ -352,43 +352,6 @@ app.post("/api/checkCode", async (req, res) => {
   }
 });
 
-app.post("/api/downloadPackage", async (req, res) => {
-  try {
-    const info = await axios({
-      method: "post",
-      url: "http://test.zhangyangjun.com/op/downloadPackage",
-      responseType: "stream",
-      data: {
-        code: req.body.code
-      },
-      validateStatus: () => {
-        return true;
-      }
-    });
-    if (info.status.toString().startsWith("20")) {
-      const stream = fs.createWriteStream(`./download/blog.zip`);
-      stream.on("close", () => {
-        return res.status(200).json({ errno: 0, errmsg: "", data: "" });
-      });
-      info.data.pipe(stream);
-    } else {
-      if (info.status == 400) {
-        let str = "";
-        info.data.on("data", data => {
-          str += data.toString("utf-8");
-        });
-        info.data.on("close", () => {
-          return res.status(200).json(JSON.parse(str));
-        });
-      } else {
-        return res.status(info.status).json(info.data);
-      }
-    }
-  } catch (e) {
-    return res.status(500).end(e.toString());
-  }
-});
-
 app.post("/api/handleZblog", async (req, res) => {
   const data = req.body;
   try {

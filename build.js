@@ -21,7 +21,6 @@ const buildClient = dir => {
   console.log("正在创建文件夹...");
   fse.ensureDirSync(remoteDir);
   fse.emptyDirSync(remoteDir);
-  fse.mkdirSync(`${remoteDir}/download`);
 
   // 构建admin和ucenter至www目录
   console.log("正在构建客户端...");
@@ -34,6 +33,7 @@ const buildClient = dir => {
   fse.copySync("./public", `${remoteDir}/public`);
   fse.copySync("./index.js", `${remoteDir}/index.js`);
   fse.copySync("./package.json", `${remoteDir}/package.json`);
+  fse.copySync("./download", `${remoteDir}/download`);
 
   // 移除部分不需要的文件
   fse.removeSync(`${remoteDir}/package/redhat-linux7/.gitignore`);

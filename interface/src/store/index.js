@@ -15,8 +15,7 @@ const store = () =>
       mysql: {
         account: "",
         password: ""
-      },
-      code: ""
+      }
     },
     getters: {},
     mutations: {
@@ -25,9 +24,6 @@ const store = () =>
       },
       SET_MYSQL(state, mysqlInfo) {
         state.mysql = mysqlInfo;
-      },
-      SET_CODE(state, code) {
-        state.code = code;
       }
     },
     actions: {}

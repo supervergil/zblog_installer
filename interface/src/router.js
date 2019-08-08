@@ -10,7 +10,6 @@ import Welcome from "@/pages/welcome";
 import Server from "@/pages/server";
 import Environment from "@/pages/environment";
 import Mysql from "@/pages/mysql";
-import Code from "@/pages/code";
 import Install from "@/pages/install";
 import Over from "@/pages/over";
 
@@ -32,10 +31,6 @@ const routerList = [
   {
     path: "/mysql",
     component: Mysql
-  },
-  {
-    path: "/code",
-    component: Code
   },
   {
     path: "/install",

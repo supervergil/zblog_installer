@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: "code",
+  name: "install",
   layout: "full",
   data() {
     return {
@@ -28,19 +28,6 @@ export default {
   },
   created() {},
   methods: {
-    async install() {
-      this.statusContent = "正在下载zblog软件包...";
-      const { status } = await this.$http("post", "/api/downloadPackage", {
-        data: {
-          code: this.$store.state.code
-        }
-      });
-      if (status === 1) {
-        this.statusContent = "zblog软件包下载完成！";
-      } else {
-        this.statusContent = "下载出错，请重新尝试！";
-      }
-    },
     async handleZblog() {
       this.statusContent = "正在处理zblog软件包...";
       const { status } = await this.$http("post", "/api/handleZblog", {
@@ -97,7 +84,6 @@ export default {
           }
         );
         this.launched = true;
-        await this.install();
         await this.handleZblog();
         await this.deployZblog();
         this.$router.replace("/over");
