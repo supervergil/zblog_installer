@@ -2,7 +2,7 @@
 
 ## 这个项目是做什么的
 
-这个项目是zblog的安装程序，只要你有一台linux-centos7服务器，目前使用内测码可以一键安装zblog。
+这个项目是zblog的安装程序，只要你有一台linux-centos7服务器可以一键安装zblog。
 
 ## zblog博客系统介绍
 
